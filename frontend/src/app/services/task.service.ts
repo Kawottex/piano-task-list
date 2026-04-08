@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Task } from '@piano-task-list/shared';
 import { Observable } from 'rxjs';
 
@@ -16,6 +16,7 @@ export class TaskService {
   }
 
   createTask(task: Task): Observable<Task> {
+    console.log("CREEATE TASK");
     return this.http.post<Task>(this.apiUrl, task);
   }
 }

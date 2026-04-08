@@ -1,0 +1,32 @@
+<form (ngSubmit)="createTask()" #taskForm="ngForm" class="task-creator">
+  <h2>Create a task</h2>
+
+  <label>
+    Title
+    <input
+      name="title"
+      type="text"
+      required
+      [(ngModel)]="title"
+      [disabled]="isSubmitting"
+      placeholder="e.g. Practice scales"
+    />
+  </label>
+
+  <label>
+    Description
+    <textarea
+      name="description"
+      rows="3"
+      [(ngModel)]="description"
+      [disabled]="isSubmitting"
+      placeholder="What do you want to do?"
+    ></textarea>
+  </label>
+
+  <button type="submit" [disabled]="isSubmitting || taskForm.invalid">
+    {{ isSubmitting ? 'Creating…' : 'Create' }}
+  </button>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</form>

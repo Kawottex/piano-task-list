@@ -1,0 +1,21 @@
+/* Two-column layout (creator left, list right) */
+.tasklist-main {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+  height: calc(100vh - 32px);
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.tasklist-main__left,
+.tasklist-main__right {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .tasklist-main {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+}
