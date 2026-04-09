@@ -5,9 +5,10 @@
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "module": "commonjs",
+    "module": "Node16",
     "target": "ES6",
     "types": [],
+    "moduleResolution": "node16",
 
     // Other Outputs
     "sourceMap": true,

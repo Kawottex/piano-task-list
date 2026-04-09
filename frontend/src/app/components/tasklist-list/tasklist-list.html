@@ -1,15 +1,14 @@
 <section class="tasklist">
   <header class="tasklist__header">
     <h2>Tasks</h2>
-    <button type="button" (click)="loadTasks()" [disabled]="isLoading">Refresh</button>
   </header>
 
-  <p *ngIf="isLoading">Loading…</p>
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-  <p *ngIf="!isLoading && !errorMessage && tasks.length === 0">No tasks yet.</p>
+  <p *ngIf="isLoading()">Loading…</p>
+  <p *ngIf="errorMessage()" class="error">{{ errorMessage() }}</p>
+  <p *ngIf="!isLoading() && !errorMessage() && tasks().length === 0">No tasks yet.</p>
 
-  <div class="tasklist__scroll" *ngIf="!isLoading && !errorMessage && tasks.length > 0">
-    <div class="task" *ngFor="let task of tasks; trackBy: trackByTaskId">
+  <div class="tasklist__scroll" *ngIf="!isLoading() && !errorMessage() && tasks().length > 0">
+    <div class="task" *ngFor="let task of tasks();">
       <div class="task__title">{{ task.title }}</div>
       <div class="task__description" *ngIf="task.description">
         {{ task.description }}

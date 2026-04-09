@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Task } from '@piano-task-list/shared';
 import { TaskService } from '../../services/task.service';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-tasklist-list',
@@ -10,32 +11,28 @@ import { TaskService } from '../../services/task.service';
   styleUrl: './tasklist-list.scss',
 })
 export class TasklistList implements OnInit {
-  tasks: Task[] = [];
-  isLoading = false;
-  errorMessage: string | null = null;
+  tasks = signal<Task[]>([]);
+  isLoading = signal(false);
+  errorMessage = signal('');
 
-  constructor(private taskService: TaskService, private cdr: ChangeDetectorRef) {}
-
-  trackByTaskId = (_index: number, task: Task) => task.id;
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
   loadTasks() {
-    this.isLoading = true;
-    this.errorMessage = null;
+    this.isLoading.set(true);
+    this.errorMessage.set('');
 
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
-        this.tasks = tasks ?? [];
-        this.isLoading = false;
-        this.cdr.detectChanges();
+        this.tasks.set(tasks ?? []);
+        this.isLoading.set(false);
       },
       error: () => {
-        this.errorMessage = 'Failed to load tasks. Please try again.';
-        this.isLoading = false;
-        this.cdr.detectChanges();
+        this.errorMessage.set('Failed to load tasks. Please try again.');
+        this.isLoading.set(false);
       },
     });
   }

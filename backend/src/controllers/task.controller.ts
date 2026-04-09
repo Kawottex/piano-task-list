@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import Task from '../models/Task';
+import TaskModel from '../models/Task';
 import { buildTaskFilter } from '../filters/task.filter';
 
 export async function getTasks(req: Request, res: Response) {
     const filter = buildTaskFilter();
-    const tasks = await Task.find(filter);
+    const tasks = await TaskModel.find(filter);
     const result = tasks.map((task) => {
         const obj = task.toObject();
         return obj;
@@ -14,7 +14,7 @@ export async function getTasks(req: Request, res: Response) {
 
 export async function createTask(req: Request, res: Response) {
     const taskData = req.body;
-    const task = new Task(taskData);
+    const task = new TaskModel(taskData);
     try {
         const newTask = await task.save();
         console.log('✅ Task created:', newTask);

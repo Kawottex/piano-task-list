@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Task } from '@piano-task-list/shared';
 import { TaskService } from '../../services/task.service';
+import { signal } from '@angular/core';
 
 @Component({
   selector: 'app-tasklist-creator',
@@ -14,44 +15,40 @@ export class TasklistCreator {
   title = '';
   description = '';
 
-  isSubmitting = false;
-  errorMessage: string | null = null;
+  isSubmitting = signal(false);
+  errorMessage = signal('');
 
   @Output() taskCreated = new EventEmitter<Task>();
 
-  constructor(private taskService: TaskService, private cdr: ChangeDetectorRef) {}
+  constructor(private taskService: TaskService) {}
 
   createTask() {
-    this.errorMessage = null;
+    this.errorMessage.set('');
 
     const trimmedTitle = this.title.trim();
     const trimmedDescription = this.description.trim();
     if (!trimmedTitle) {
-      this.errorMessage = 'Title is required.';
+      this.errorMessage.set('Title is required.');
       return;
     }
 
-    this.isSubmitting = true;
+    this.isSubmitting.set(true);
 
     const taskToCreate: Task = {
-      id: '',
       title: trimmedTitle,
-      description: trimmedDescription,
-      completed: false,
+      description: trimmedDescription
     };
 
     this.taskService.createTask(taskToCreate).subscribe({
       next: () => {
         this.title = '';
         this.description = '';
-        this.isSubmitting = false;
-        this.cdr.detectChanges();
+        this.isSubmitting.set(false);
         this.taskCreated.emit(taskToCreate);
       },
       error: () => {
-        this.errorMessage = 'Failed to create task. Please try again.';
-        this.isSubmitting = false;
-        this.cdr.detectChanges();
+        this.errorMessage.set('Failed to create task. Please try again.');
+        this.isSubmitting.set(false);
       },
     });
   }

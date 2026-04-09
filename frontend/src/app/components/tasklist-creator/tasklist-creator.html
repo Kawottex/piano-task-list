@@ -8,8 +8,8 @@
       type="text"
       required
       [(ngModel)]="title"
-      [disabled]="isSubmitting"
-      placeholder="e.g. Practice scales"
+      [disabled]="isSubmitting()"
+      placeholder="e.g. Buy milk"
     />
   </label>
 
@@ -19,14 +19,14 @@
       name="description"
       rows="3"
       [(ngModel)]="description"
-      [disabled]="isSubmitting"
+      [disabled]="isSubmitting()"
       placeholder="What do you want to do?"
     ></textarea>
   </label>
 
-  <button type="submit" [disabled]="isSubmitting || taskForm.invalid">
-    {{ isSubmitting ? 'Creating…' : 'Create' }}
+  <button type="submit" [disabled]="isSubmitting() || taskForm.invalid">
+    {{ isSubmitting() ? 'Creating…' : 'Create' }}
   </button>
 
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+  <p *ngIf="errorMessage()" class="error">{{ errorMessage() }}</p>
 </form>
