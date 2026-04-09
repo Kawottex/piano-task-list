@@ -8,5 +8,6 @@
 
 - Run frontend:
 ```
-    cd frontend && ng serve
+    cd frontend && npm install
+    ng serve
 ```
